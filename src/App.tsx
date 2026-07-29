@@ -35,11 +35,17 @@ const AppContent: React.FC = () => {
   const [showAdmin, setShowAdmin] = useState(false);
   const { texts, hasChanges, isSaving, saveChanges, discardChanges, pendingChanges, isEditMode, setIsEditMode } = useSiteTexts();
 
-  // ── 시네마틱 인트로 오버레이 상태 ──
+  // ── 시네마틱 인트로 오버레이 및 새로고침 시 최상단 이동 ──
   const [introActive, setIntroActive] = useState(false);
   const [introFading, setIntroFading] = useState(false);
 
   useEffect(() => {
+    // 새로고침 시 브라우저 스크롤 위치 기억을 해제하고 항상 최상단(Home)으로 스크롤 이동
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     const hasPlayed = sessionStorage.getItem('introPlayed');
     if (!hasPlayed) {
       setIntroActive(true);
