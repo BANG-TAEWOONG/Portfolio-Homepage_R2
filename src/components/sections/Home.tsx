@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSiteTexts } from '../../hooks/useSiteTexts';
 import EditableText from '../EditableText';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 
 interface HomeProps {
   isIntroPlaying?: boolean;
@@ -86,10 +87,7 @@ const Home: React.FC<HomeProps> = ({ isIntroPlaying = false }) => {
   // 'Explore Portfolio' 버튼 클릭 시 Work 섹션으로 부드럽게 스크롤 이동
   const scrollToWork = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    const element = document.getElementById('work');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    smoothScrollTo('work', 64, 900);
   };
 
   return (
@@ -197,8 +195,7 @@ const Home: React.FC<HomeProps> = ({ isIntroPlaying = false }) => {
       {/* ---------------------------------------------------------------------- */}
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 animate-pulse cursor-pointer transition-opacity duration-1000" onClick={(e) => {
         e.stopPropagation();
-        const workSec = document.getElementById('work');
-        if (workSec) workSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        smoothScrollTo('work', 64, 900);
       }}>
         <div className="flex flex-col items-center">
           <span className="text-white/40 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4">Scroll</span>

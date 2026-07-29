@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 
 interface NavbarProps {
   activeSection: string; // 현재 화면에 보이는 섹션 ID (부모 컴포넌트로부터 전달받음)
@@ -52,11 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, onAdminClick }) => {
   // 3. 특정 섹션으로 부드럽게 이동하는 함수 (Smooth Scroll)
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
-    const element = document.getElementById(id);
-
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    smoothScrollTo(id, 64, 900);
   };
 
   return (
