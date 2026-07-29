@@ -98,13 +98,30 @@ const Contact: React.FC = () => {
         </div>
       )}
 
-      {/* 2-B. 촬영 문의하기 (CTA Button -> 클릭 시 1:1 문의 모달 오픈) */}
-      <div className="mt-12 md:mt-16">
+      {/* 2-B. 촬영 문의하기 2가지 선택 버튼 (구글폼 / 웹 직접 신청) */}
+      <div className="mt-12 md:mt-16 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
+        {/* 구글 폼으로 신청하기 */}
+        <a
+          href={texts.contactFormUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 border border-slate-300 text-xs sm:text-sm font-bold tracking-[0.15em] uppercase text-slate-800 hover:bg-slate-100 hover:border-slate-400 transition-all duration-300 rounded-full shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+          Google Form으로 신청하기
+        </a>
+
+        {/* 웹에서 바로 1:1 신청하기 */}
         <button
           onClick={() => setIsInquiryOpen(true)}
-          className="inline-block px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 md:py-4 border border-slate-200 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 cursor-pointer rounded-full shadow-sm hover:shadow-md"
+          className="w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 bg-slate-900 text-white text-xs sm:text-sm font-bold tracking-[0.15em] uppercase hover:bg-slate-800 transition-all duration-300 rounded-full shadow-md flex items-center justify-center gap-2 cursor-pointer"
         >
-          <EditableText textKey="contactFormButtonText" />
+          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          웹에서 바로 신청하기
         </button>
       </div>
 

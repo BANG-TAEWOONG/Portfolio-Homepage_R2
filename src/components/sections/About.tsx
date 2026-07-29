@@ -295,7 +295,8 @@ const InteractiveSkillSection: React.FC = () => {
                             {filteredEq.map((skill, idx) => (
                               <div
                                 key={`${skill.name}-${idx}`}
-                                className="p-3 bg-white border border-slate-100 rounded-md hover:border-slate-300 transition-all duration-300 shadow-sm relative group/eqcard"
+                                className="stagger-item p-3 bg-white border border-slate-100 rounded-md hover:border-slate-300 transition-all duration-300 shadow-sm relative group/eqcard"
+                                style={{ animationDelay: `${idx * 50}ms` }}
                               >
                                 <div className="flex justify-between items-start gap-2">
                                   <div className="flex flex-col">
@@ -357,7 +358,8 @@ const InteractiveSkillSection: React.FC = () => {
                             {filteredExp.map((skill, idx) => (
                               <div
                                 key={`${skill.name}-${idx}`}
-                                className="px-2 py-0.5 bg-slate-50 border border-slate-100 hover:bg-slate-100 hover:border-slate-200 transition-all rounded text-[9px] font-medium text-slate-600 flex items-center gap-1 cursor-default"
+                                className="stagger-item px-2 py-0.5 bg-slate-50 border border-slate-100 hover:bg-slate-100 hover:border-slate-200 transition-all rounded text-[9px] font-medium text-slate-600 flex items-center gap-1 cursor-default"
+                                style={{ animationDelay: `${idx * 40}ms` }}
                                 title={`Familiarity Level: ${renderLevel(skill.level)}`}
                               >
                                 <span className="tracking-tight">{skill.name}</span>

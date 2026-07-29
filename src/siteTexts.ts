@@ -42,7 +42,7 @@ export const DEFAULT_SITE_TEXTS = {
     contactYoutube: "https://youtube.com/@twoongstudio?si=cXvblSrN-XT7kDHx",
     contactLocation: "Seoul, South Korea",
     contactAvailability: "Available for worldwide projects",
-    contactFormUrl: "https://forms.google.com/YOUR_FORM_ID",
+    contactFormUrl: "https://docs.google.com/forms/d/e/1FAIpQLScjVHKuWspHVI8P6BtTx8KMrMPFi4PiR0P05xk8Xjg4UqVoeg/viewform?usp=sharing&ouid=104716852182575239718",
     contactCalendarUrl: "https://calendar.google.com/calendar/embed?src=d83273c5b0943375ee59b11179d4c555b62660043cc16173e988a8972081b012%40group.calendar.google.com&ctz=Asia%2FSeoul",
     contactFormButtonText: "촬영 신청하기",
 
