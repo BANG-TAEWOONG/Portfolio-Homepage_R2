@@ -101,11 +101,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ selectedWork, onClose, onNe
                     </div>
 
                     {/* B. 텍스트 컨텐츠 섹션 (스크롤 가능, 남은 공간 차지) */}
-                    <div className={`p-6 lg:p-10 bg-white overflow-y-auto no-scrollbar relative flex-grow ${selectedWork.vertical ? 'w-full lg:w-auto max-h-[50vh] lg:max-h-[85vh]' : 'w-full lg:w-1/3 max-h-[60vh] lg:max-h-[85vh]'}`}>
-                        {/* PC용 닫기 버튼 */}
+                    <div className={`p-6 lg:p-10 bg-white overflow-y-auto custom-scrollbar relative flex-grow ${selectedWork.vertical ? 'w-full lg:w-auto max-h-[50vh] lg:max-h-[85vh]' : 'w-full lg:w-1/3 max-h-[60vh] lg:max-h-[85vh]'}`}>
+                        {/* PC용 닫기 버튼 (스크롤 시에도 우상단 고정 - Sticky) */}
                         <button
                             onClick={onClose}
-                            className="hidden lg:block absolute top-4 right-4 text-slate-300 hover:text-slate-900 transition-colors"
+                            className="hidden lg:flex sticky top-0 right-0 float-right z-30 p-2 text-slate-400 hover:text-slate-900 bg-white/90 backdrop-blur-sm rounded-full transition-all shadow-sm hover:scale-110 cursor-pointer"
+                            aria-label="Close modal"
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />

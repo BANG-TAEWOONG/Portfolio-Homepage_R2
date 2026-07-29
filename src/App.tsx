@@ -115,25 +115,25 @@ const AppContent: React.FC = () => {
       <Navbar activeSection={activeSection} onAdminClick={() => setShowAdmin(true)} />
 
       <main>
-        <section id="home">
+        <section id="home" className="scroll-mt-16 md:scroll-mt-20">
           <Suspense fallback={<SectionLoader />}>
             <Home isIntroPlaying={introActive && !introFading} />
           </Suspense>
         </section>
 
-        <RevealSection id="work" className="py-16 md:py-32 bg-white">
+        <RevealSection id="work" className="py-16 md:py-32 bg-white scroll-mt-16 md:scroll-mt-20">
           <Suspense fallback={<SectionLoader />}>
             <Work />
           </Suspense>
         </RevealSection>
 
-        <RevealSection id="about" className="py-16 md:py-32 bg-slate-50">
+        <RevealSection id="about" className="py-16 md:py-32 bg-slate-50 scroll-mt-16 md:scroll-mt-20">
           <Suspense fallback={<SectionLoader />}>
             <About />
           </Suspense>
         </RevealSection>
 
-        <RevealSection id="contact" className="py-16 md:py-40">
+        <RevealSection id="contact" className="py-16 md:py-40 scroll-mt-16 md:scroll-mt-20">
           <Suspense fallback={<SectionLoader />}>
             <Contact />
           </Suspense>

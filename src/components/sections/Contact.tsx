@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useSiteTexts } from '../../hooks/useSiteTexts';
 import EditableText from '../EditableText';
+import InquiryModal from './InquiryModal';
 
 const Contact: React.FC = () => {
   const { texts } = useSiteTexts();
   const [showToast, setShowToast] = useState(false);
+  const [isInquiryOpen, setIsInquiryOpen] = useState(false);
 
   const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // 클립보드에 이메일 주소 복사
@@ -96,17 +98,22 @@ const Contact: React.FC = () => {
         </div>
       )}
 
-      {/* 2-B. 촬영 문의하기 (CTA Button - CMS 연동 및 EditableText 래핑) */}
+      {/* 2-B. 촬영 문의하기 (CTA Button -> 클릭 시 1:1 문의 모달 오픈) */}
       <div className="mt-12 md:mt-16">
-        <a
-          href={texts.contactFormUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 md:py-4 border border-slate-200 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase text-slate-500 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300"
+        <button
+          onClick={() => setIsInquiryOpen(true)}
+          className="inline-block px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 md:py-4 border border-slate-200 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 cursor-pointer rounded-full shadow-sm hover:shadow-md"
         >
           <EditableText textKey="contactFormButtonText" />
-        </a>
+        </button>
       </div>
+
+      {/* 1:1 문의 모달 컴포넌트 */}
+      <InquiryModal
+        isOpen={isInquiryOpen}
+        onClose={() => setIsInquiryOpen(false)}
+        contactEmail={texts.contactEmail}
+      />
 
       {/* 3. 하단 정보 섹션 */}
       {/* 활동 지역 및 가능 여부 표시 */}

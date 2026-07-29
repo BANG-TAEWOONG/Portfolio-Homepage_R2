@@ -257,10 +257,10 @@ const InteractiveSkillSection: React.FC = () => {
                 <div className="flex-grow border-t border-slate-100"></div>
               </div>
 
-              {/* 세부 리스트 (하단 노출) */}
+              {/* 세부 리스트 (하단 노출 - 고정 최대 높이 & 커스텀 스크롤바로 3개 컬럼 높이 밸런스 유지 + 디졸브 애니메이션) */}
               <div
                 key={currentFilter + (category === 'Equipment' ? `-${activeBrand}` : '')}
-                className="space-y-5 animate-in fade-in slide-in-from-bottom-2 duration-300 min-h-[180px]"
+                className="space-y-5 animate-dissolve max-h-[340px] md:max-h-[380px] overflow-y-auto custom-scrollbar pr-2 min-h-[180px]"
               >
                 {category === 'Equipment' ? (
                   // Equipment 전용 렌더링 (보유 장비 및 운용 가능 장비)

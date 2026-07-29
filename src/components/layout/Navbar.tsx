@@ -51,19 +51,11 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, onAdminClick }) => {
 
   // 3. 특정 섹션으로 부드럽게 이동하는 함수 (Smooth Scroll)
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault(); // a 태그의 기본 동작(즉시 점프)을 막음
+    e.preventDefault();
     const element = document.getElementById(id);
 
     if (element) {
-      const headerOffset = 64; // 고정된 헤더 높이(64px)만큼 위치를 보정해줌
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-      // 계산된 위치로 부드럽게 스크롤 이동
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 

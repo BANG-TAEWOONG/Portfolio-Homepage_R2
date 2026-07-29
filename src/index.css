@@ -1,5 +1,69 @@
 @import "tailwindcss";
 
+/* Global Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar for minimal skill/tool/equipment lists */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+/* Dissolve Fade-in Animation */
+.animate-dissolve {
+  animation: dissolveIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dissolveIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Sound Wave Equalizer Animation for Unmuted Audio */
+@keyframes soundWaveBar {
+  0%, 100% {
+    height: 4px;
+  }
+  50% {
+    height: 16px;
+  }
+}
+
+.animate-wave-1 {
+  animation: soundWaveBar 0.8s ease-in-out infinite;
+}
+.animate-wave-2 {
+  animation: soundWaveBar 0.8s ease-in-out 0.2s infinite;
+}
+.animate-wave-3 {
+  animation: soundWaveBar 0.8s ease-in-out 0.4s infinite;
+}
+.animate-wave-4 {
+  animation: soundWaveBar 0.8s ease-in-out 0.1s infinite;
+}
+
 /* Reveal Animation */
 .reveal-view {
   opacity: 0;
@@ -14,7 +78,7 @@
 
 /* Stagger Animation */
 .stagger-item {
-  animation: slowFade 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: slowFade 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -63,6 +127,7 @@
   from { width: 0; }
   to { width: 100%; }
 }
+
 
 
 

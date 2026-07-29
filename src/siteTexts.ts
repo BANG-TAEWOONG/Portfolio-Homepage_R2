@@ -47,7 +47,7 @@ export const DEFAULT_SITE_TEXTS = {
     contactFormButtonText: "촬영 신청하기",
 
     // ── Footer ──
-    footerCopyright: "TEST",
+    footerCopyright: "TWOONG STUDIO",
 };
 
 export type SiteTexts = typeof DEFAULT_SITE_TEXTS;

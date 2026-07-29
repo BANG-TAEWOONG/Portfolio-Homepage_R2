@@ -88,14 +88,7 @@ const Home: React.FC<HomeProps> = ({ isIntroPlaying = false }) => {
     e.preventDefault();
     const element = document.getElementById('work');
     if (element) {
-      const headerOffset = 64; // 헤더 높이만큼 보정
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -169,24 +162,33 @@ const Home: React.FC<HomeProps> = ({ isIntroPlaying = false }) => {
       </div>
 
       {/* ---------------------------------------------------------------------- */}
-      {/* C. 우측 하단 소리 조절 버튼 */}
+      {/* C. 우측 하단 소리 조절 버튼 & 이퀄라이저 애니메이션 */}
       {/* ---------------------------------------------------------------------- */}
       <button
         onClick={toggleMute}
-        className="absolute bottom-6 right-6 md:bottom-12 md:right-12 z-20 p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 group"
+        className="absolute bottom-6 right-6 md:bottom-12 md:right-12 z-20 px-4 py-3 md:px-5 md:py-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 group flex items-center gap-3 border border-white/10 hover:border-white/30 cursor-pointer"
         aria-label={isMuted ? "Unmute" : "Mute"}
       >
         {isMuted ? (
           // 음소거 아이콘 (Speaker X)
-          <svg className="w-6 h-6 md:w-5 md:h-5 text-white/70 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 md:w-5 md:h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9l2 2m0 0l2 2m-2-2l-2 2m2-2l2-2" />
           </svg>
         ) : (
-          // 소리 켜짐 아이콘 (Speaker Wave)
-          <svg className="w-6 h-6 md:w-5 md:h-5 text-white/70 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-          </svg>
+          // 소리 켜짐 아이콘 + 미니 이퀄라이저 웨이브
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5 md:w-5 md:h-5 text-white group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+            {/* 사운드 웨이브 막대 애니메이션 */}
+            <div className="flex items-end gap-[3px] h-4">
+              <span className="w-[2px] bg-white rounded-full animate-wave-1"></span>
+              <span className="w-[2px] bg-white rounded-full animate-wave-2"></span>
+              <span className="w-[2px] bg-white rounded-full animate-wave-3"></span>
+              <span className="w-[2px] bg-white rounded-full animate-wave-4"></span>
+            </div>
+          </div>
         )}
       </button>
 
@@ -196,7 +198,7 @@ const Home: React.FC<HomeProps> = ({ isIntroPlaying = false }) => {
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 animate-pulse cursor-pointer transition-opacity duration-1000" onClick={(e) => {
         e.stopPropagation();
         const workSec = document.getElementById('work');
-        if (workSec) window.scrollTo({ top: workSec.offsetTop - 64, behavior: 'smooth' });
+        if (workSec) workSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }}>
         <div className="flex flex-col items-center">
           <span className="text-white/40 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-4">Scroll</span>
