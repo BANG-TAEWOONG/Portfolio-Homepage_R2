@@ -94,13 +94,11 @@ interface EquipmentSheetRow {
 // ----------------------------------------------------------------------
 
 /**
- * 시트의 'project_type' 문자열을 앱 내부 'Category' 타입으로 변환
+ * 시트의 'project_type' 문자열을 앱 내부 'Category' 타입으로 변환 (시트의 카테고리명 원본 유지)
  */
 function mapCategory(type: string): Category {
     if (!type) return 'Other';
-    const trimmed = type.trim();
-    if (trimmed.includes('Music Video') || trimmed.includes('MV')) return 'MV';
-    return trimmed;
+    return type.trim();
 }
 
 /**

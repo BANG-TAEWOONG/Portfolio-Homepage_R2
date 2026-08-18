@@ -39,14 +39,22 @@ const Work: React.FC = () => {
   // 필터 옵션 상수 정의
   const workTypes: WorkType[] = ['Created', 'Participated'];
 
-  // 선호하는 카테고리 순서 정의
-  const PREDEFINED_ORDER = useMemo(() => ['MV', 'Dance Film', 'Dance Cover', 'Web Drama'], []);
+  // 선호하는 카테고리 순서 정의 (구글 시트의 최신 카테고리 반영)
+  const PREDEFINED_ORDER = useMemo(() => [
+    'Official MV',
+    'Unofficial MV',
+    'Dance Film',
+    'Dance Cover',
+    'Web Drama',
+    'Short Movie',
+    'Concept Video'
+  ], []);
 
-  // 카테고리 목록 동적 생성
+  // 현재 선택된 작업 유형(Personal/Participation)에 존재하는 카테고리만 동적으로 생성
   const categories = useMemo(() => {
     const cats = new Set<string>();
     workItems.forEach(item => {
-      if (item.category) {
+      if (item.type === activeType && item.category) {
         cats.add(item.category);
       }
     });
@@ -63,7 +71,14 @@ const Work: React.FC = () => {
     });
 
     return ['All', ...sortedCats];
-  }, [workItems, PREDEFINED_ORDER]);
+  }, [workItems, activeType, PREDEFINED_ORDER]);
+
+  // 작업 유형(Personal/Participation) 전환 시 해당 유형에 없는 카테고리가 선택되어 있으면 'All'로 자동 리셋
+  useEffect(() => {
+    if (activeCategory !== 'All' && !categories.includes(activeCategory)) {
+      setActiveCategory('All');
+    }
+  }, [activeType, categories, activeCategory]);
 
   // 3. 필터링 로직 (useMemo: 의존성 값이 변할 때만 재연산하여 성능 최적화)
   const filteredItems = useMemo(() => {
