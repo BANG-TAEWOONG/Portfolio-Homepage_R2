@@ -105,32 +105,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ selectedWork, onClose, onNe
                                     allowTransparency={true}
                                     allow="encrypted-media"
                                 ></iframe>
-                            ) : platform === 'other' && !selectedWork.videoUrl.endsWith('.mp4') ? (
-                                <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-slate-950 text-white space-y-4">
-                                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
-                                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                    <h4 className="text-sm font-semibold tracking-tight">{selectedWork.title}</h4>
-                                    <a
-                                        href={selectedWork.videoUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="px-6 py-3 bg-white text-slate-900 font-bold text-xs rounded-full uppercase tracking-wider hover:bg-slate-200 transition-colors shadow-lg"
-                                    >
-                                        공식 사이트에서 영상 보기 ↗
-                                    </a>
-                                </div>
+                            ) : selectedWork.videoUrl.endsWith('.mp4') ? (
+                                <video
+                                    key={`${selectedWork.id}-video`}
+                                    src={selectedWork.videoUrl}
+                                    controls
+                                    autoPlay
+                                    className="w-full h-full object-contain"
+                                />
                             ) : (
                                 <iframe
                                     key={`${selectedWork.id}-iframe`}
                                     src={getYouTubeEmbedUrl(selectedWork.videoUrl)}
-                                    className="w-full h-full absolute inset-0"
+                                    className="w-full h-full absolute inset-0 bg-black"
                                     title={selectedWork.title}
                                     frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowFullScreen
                                 ></iframe>
                             )
