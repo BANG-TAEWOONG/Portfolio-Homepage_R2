@@ -24,6 +24,17 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ selectedWork, onClose, onNe
         else setTransitionClass('animate-modal-container'); // 기본 페이드인
     }, [navDirection, selectedWork?.id]);
 
+    // 모달이 열려 있을 때 배경(바깥 페이지) 스크롤 완벽 차단
+    useEffect(() => {
+        if (selectedWork) {
+            const originalOverflow = document.body.style.overflow;
+            document.body.style.overflow = 'hidden';
+            return () => {
+                document.body.style.overflow = originalOverflow || '';
+            };
+        }
+    }, [selectedWork]);
+
     // 스와이프 핸들러 정의 (터치 스와이프 감지)
     const handlers = useSwipeable({
         onSwipedLeft: () => onNext(),
@@ -40,12 +51,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ selectedWork, onClose, onNe
     // React Portal을 사용하여 부모 컴포넌트의 DOM 계층구조를 벗어나 document.body에 직접 렌더링
     // (z-index 문제나 오버플로우 문제를 피하기 위함)
     return createPortal(
-        <div className="fixed inset-0 z-[2000] flex flex-col items-center justify-center p-4 overflow-y-auto pointer-events-none">
+        <div className="fixed inset-0 z-[2000] flex flex-col items-center justify-center p-4 overflow-hidden pointer-events-none select-none">
 
-            {/* 1. 배경 오버레이 (클릭 시 모달 닫힘) */}
+            {/* 1. 배경 오버레이 (클릭 시 모달 닫힘, 배경 휠 스크롤 전파 방지) */}
             <div
-                className="fixed inset-0 bg-white/10 backdrop-blur-md animate-modal-overlay pointer-events-auto"
+                className="fixed inset-0 bg-black/40 backdrop-blur-md animate-modal-overlay pointer-events-auto cursor-pointer"
                 onClick={onClose}
+                onWheel={(e) => e.preventDefault()}
+                onTouchMove={(e) => e.preventDefault()}
             ></div>
 
             {/* 2. 모달 메인 컨텐츠 래퍼 */}
@@ -238,14 +251,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ selectedWork, onClose, onNe
                                 </div>
                             )}
 
-                            {/* 하단 닫기 버튼 (텍스트 형태) */}
-                            <div className="pt-6 border-t border-slate-50 mt-6">
+                            {/* 하단 닫기 버튼 (우측 하단 정렬) */}
+                            <div className="pt-6 border-t border-slate-50 mt-6 flex justify-end">
                                 <button
                                     onClick={onClose}
-                                    className="flex items-center text-[9px] font-bold tracking-[0.3em] text-slate-900 group cursor-pointer"
+                                    className="flex items-center text-[9px] font-bold tracking-[0.3em] text-slate-900 group cursor-pointer hover:text-slate-500 transition-colors"
                                 >
-                                    <span className="mr-3 group-hover:-translate-x-1 transition-transform">←</span>
                                     CLOSE PROJECT
+                                    <span className="ml-3 group-hover:translate-x-1 transition-transform">→</span>
                                 </button>
                             </div>
                         </div>
