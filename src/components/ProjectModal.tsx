@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { createPortal } from 'react-dom';
 import { WorkItem } from '../types';
-import { getYouTubeEmbedUrl } from '../services/youtube';
+import { getYouTubeEmbedUrl, getVideoPlatform } from '../services/youtube';
 
 // 컴포넌트에서 사용할 Props 타입 정의
 interface ProjectModalProps {
@@ -34,6 +34,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ selectedWork, onClose, onNe
 
     // 선택된 작업물이 없으면 렌더링하지 않음
     if (!selectedWork) return null;
+
+    const platform = getVideoPlatform(selectedWork.videoUrl);
 
     // React Portal을 사용하여 부모 컴포넌트의 DOM 계층구조를 벗어나 document.body에 직접 렌더링
     // (z-index 문제나 오버플로우 문제를 피하기 위함)
@@ -79,17 +81,48 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ selectedWork, onClose, onNe
                     {/* A. 비디오 섹션 */}
                     <div className={`bg-black relative shrink-0 self-stretch flex items-center justify-center ${selectedWork.vertical ? 'w-full aspect-[9/16] lg:w-auto lg:h-full lg:aspect-[9/16]' : 'w-full lg:w-2/3 aspect-video lg:aspect-auto lg:h-full'}`}>
                         {selectedWork.videoUrl && (
-                            <iframe
-                                key={`${selectedWork.id}-iframe`}
-                                src={getYouTubeEmbedUrl(selectedWork.videoUrl)}
-                                className="w-full h-full absolute inset-0"
-                                title={selectedWork.title}
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
+                            platform === 'instagram' ? (
+                                <iframe
+                                    key={`${selectedWork.id}-insta-iframe`}
+                                    src={getYouTubeEmbedUrl(selectedWork.videoUrl)}
+                                    className="w-full h-full absolute inset-0 bg-slate-950"
+                                    title={selectedWork.title}
+                                    frameBorder="0"
+                                    scrolling="no"
+                                    allowTransparency={true}
+                                    allow="encrypted-media"
+                                ></iframe>
+                            ) : platform === 'other' && !selectedWork.videoUrl.endsWith('.mp4') ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-slate-950 text-white space-y-4">
+                                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
+                                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <h4 className="text-sm font-semibold tracking-tight">{selectedWork.title}</h4>
+                                    <a
+                                        href={selectedWork.videoUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="px-6 py-3 bg-white text-slate-900 font-bold text-xs rounded-full uppercase tracking-wider hover:bg-slate-200 transition-colors shadow-lg"
+                                    >
+                                        공식 사이트에서 영상 보기 ↗
+                                    </a>
+                                </div>
+                            ) : (
+                                <iframe
+                                    key={`${selectedWork.id}-iframe`}
+                                    src={getYouTubeEmbedUrl(selectedWork.videoUrl)}
+                                    className="w-full h-full absolute inset-0"
+                                    title={selectedWork.title}
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            )
                         )}
-                        {/* 영상 우상단 닫기 버튼 (X 아이콘) - 모바일에서만 노출하거나 PC에서도 유지? PC는 우측 텍스트 영역에 넣는게 나을수도 있으나 일단 유지 */}
+                        {/* 영상 우상단 닫기 버튼 (X 아이콘) */}
                         <button
                             onClick={onClose}
                             className="absolute top-3 right-3 z-[2030] p-1.5 text-white/50 hover:text-white transition-all duration-300 lg:hidden"
@@ -173,11 +206,43 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ selectedWork, onClose, onNe
                                 </section>
                             </div>
 
+                            {/* 플랫폼 바로가기 액션 버튼 */}
+                            {selectedWork.videoUrl && (
+                                <div className="pt-4">
+                                    <a
+                                        href={selectedWork.videoUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all shadow-sm ${
+                                            platform === 'instagram'
+                                                ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500 text-white hover:opacity-90'
+                                                : platform === 'youtube'
+                                                ? 'bg-red-600 text-white hover:bg-red-700'
+                                                : 'bg-slate-900 text-white hover:bg-slate-800'
+                                        }`}
+                                    >
+                                        {platform === 'instagram' && (
+                                            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                            </svg>
+                                        )}
+                                        {platform === 'youtube' && (
+                                            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                            </svg>
+                                        )}
+                                        <span>
+                                            {platform === 'instagram' ? 'Instagram에서 열기' : platform === 'youtube' ? 'YouTube에서 열기' : '원본 링크 바로가기'} ↗
+                                        </span>
+                                    </a>
+                                </div>
+                            )}
+
                             {/* 하단 닫기 버튼 (텍스트 형태) */}
-                            <div className="pt-8 border-t border-slate-50 mt-8">
+                            <div className="pt-6 border-t border-slate-50 mt-6">
                                 <button
                                     onClick={onClose}
-                                    className="flex items-center text-[9px] font-bold tracking-[0.3em] text-slate-900 group"
+                                    className="flex items-center text-[9px] font-bold tracking-[0.3em] text-slate-900 group cursor-pointer"
                                 >
                                     <span className="mr-3 group-hover:-translate-x-1 transition-transform">←</span>
                                     CLOSE PROJECT
